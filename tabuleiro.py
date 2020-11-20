@@ -25,10 +25,8 @@ class Tabuleiro:
         self.valor = ataques
 
     def ha_ataque(self, indice_a, indice_b):
-        distancia_diagonal = indice_b - indice_a
         return (self.rainhas[indice_a] == self.rainhas[indice_b]  # ataque horizontal
-                or self.rainhas[indice_b] == self.rainhas[indice_a] - distancia_diagonal  # ataque diagonal em cima
-                or self.rainhas[indice_b] == self.rainhas[indice_a] + distancia_diagonal)
+                or (indice_b - indice_a) == abs(self.rainhas[indice_b] - self.rainhas[indice_a])) # ataque diagonal
 
     def __sub__(self, other):
         return self.valor - other.valor
