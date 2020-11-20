@@ -5,6 +5,8 @@ import typing as t
 # noinspection SpellCheckingInspection,SpellCheckingInspection
 class Tabuleiro:
     def __init__(self, n_rainhas=8, lado_tabuleiro=8):
+        self.__lado_tabuleiro = None
+        self.__n_rainhas = None
         self.__rainhas = None
         self.__valor = np.inf
 
@@ -25,6 +27,9 @@ class Tabuleiro:
 
         if novo_lado_tabuleiro < 0:
             raise ValueError("O atributo lado_tabuleiro precisa receber um número positivo.")
+        if self.n_rainhas is not None and novo_lado_tabuleiro < self.n_rainhas:
+            raise ValueError("O atributo lado_tabuleiro precisa receber um número, no mínimo, igual ao atributo "
+                             "n_rainhas.")
 
         self.__lado_tabuleiro = novo_lado_tabuleiro
 
@@ -42,7 +47,7 @@ class Tabuleiro:
 
         if novo_n_rainhas < 0:
             raise ValueError("O atributo n_rainhas precisa receber um número positivo.")
-        if novo_n_rainhas > self.lado_tabuleiro:
+        if self.lado_tabuleiro is not None and novo_n_rainhas > self.lado_tabuleiro:
             raise ValueError("O atributo n_rainhas não pode ser maior do que o atributo lado_tabuleiro.")
 
         self.__n_rainhas = novo_n_rainhas
