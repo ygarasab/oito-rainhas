@@ -1,5 +1,5 @@
 from algoritmos import shc
-from tabuleiro import Tabuleiro
+from algoritmos.tabuleiro import Tabuleiro
 
 tab1 = Tabuleiro(4)
 tab2 = Tabuleiro(4)
@@ -9,4 +9,5 @@ tab2.rainhas = [2, 0, 2, 1]
 print(f"Valor do tab1: {tab1.valor}\n"
       f"Valor do tab2: {tab2.valor}")
 
-shc.simulated_annealing(100)
+# noinspection SpellCheckingInspection
+tabuleiro = shc.simulated_annealing(100, .01)
