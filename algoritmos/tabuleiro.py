@@ -1,14 +1,13 @@
 import numpy as np
 import typing as t
 
+from . import erros
+
 
 # noinspection SpellCheckingInspection,SpellCheckingInspection
 class Tabuleiro:
     def __init__(self, n_rainhas=8, lado_tabuleiro=8):
-        self.__lado_tabuleiro = None
-        self.__n_rainhas = None
-        self.__rainhas = None
-        self.__valor = np.inf
+        self.__lado_tabuleiro, self.__n_rainhas, self.__rainhas, self.__valor = None, None, None, np.inf
 
         self.lado_tabuleiro = lado_tabuleiro
         self.n_rainhas = n_rainhas
@@ -19,14 +18,12 @@ class Tabuleiro:
 
     @lado_tabuleiro.setter
     def lado_tabuleiro(self, novo_lado_tabuleiro):
-        if not isinstance(novo_lado_tabuleiro, t.SupportsInt):
-            raise TypeError("O atributo lado_tabuleiro precisa receber um número inteiro ou um objeto que possa ser "
-                            "convertido para tal.")
-        else:
-            novo_lado_tabuleiro = int(novo_lado_tabuleiro)
+        erros.verifica_tipo(lado_tabuleiro=(novo_lado_tabuleiro, "atributo", t.SupportsInt))
 
-        if novo_lado_tabuleiro < 0:
-            raise ValueError("O atributo lado_tabuleiro precisa receber um número positivo.")
+        novo_lado_tabuleiro = int(novo_lado_tabuleiro)
+
+        erros.verifica_nao_negatividade(lado_tabuleiro=(novo_lado_tabuleiro, "atributo"))
+
         if self.n_rainhas is not None and novo_lado_tabuleiro < self.n_rainhas:
             raise ValueError("O atributo lado_tabuleiro precisa receber um número, no mínimo, igual ao atributo "
                              "n_rainhas.")
@@ -39,14 +36,12 @@ class Tabuleiro:
 
     @n_rainhas.setter
     def n_rainhas(self, novo_n_rainhas):
-        if not isinstance(novo_n_rainhas, t.SupportsInt):
-            raise TypeError("O atributo n_rainhas precisa receber um número inteiro ou um objeto que possa ser "
-                            "convertido para tal.")
-        else:
-            novo_n_rainhas = int(novo_n_rainhas)
+        erros.verifica_tipo(n_rainhas=(novo_n_rainhas, "atributo", t.SupportsInt))
 
-        if novo_n_rainhas < 0:
-            raise ValueError("O atributo n_rainhas precisa receber um número positivo.")
+        novo_n_rainhas = int(novo_n_rainhas)
+
+        erros.verifica_nao_negatividade(n_rainhas=(novo_n_rainhas, "atributo"))
+
         if self.lado_tabuleiro is not None and novo_n_rainhas > self.lado_tabuleiro:
             raise ValueError("O atributo n_rainhas não pode ser maior do que o atributo lado_tabuleiro.")
 
@@ -71,7 +66,6 @@ class Tabuleiro:
 
         if novo_rainhas.shape[0] < self.lado_tabuleiro:
             diferenca = self.lado_tabuleiro - novo_rainhas.shape[0]
-
             novo_rainhas = np.append(novo_rainhas, diferenca * [-1])
         elif novo_rainhas.shape[0] > self.lado_tabuleiro:
             raise TypeError("O comprimento de novo_rainhas precisa ser, no máximo, igual ao atributo lado_tabuleiro.")
@@ -103,28 +97,19 @@ class Tabuleiro:
 
     @valor.setter
     def valor(self, novo_valor):
-        if not isinstance(novo_valor, t.SupportsInt):
-            raise TypeError("O atributo valor precisa receber um número inteiro ou um objeto que possa ser convertido "
-                            "para tal.")
-        else:
-            novo_valor = int(novo_valor)
+        erros.verifica_tipo(valor=(novo_valor, "atributo", t.SupportsInt))
 
-        # TODO: se pertinente, colocar verificações para que o valor (número de ataques) não exceda o lado do tabuleiro.
+        novo_valor = int(novo_valor)
+
+        erros.verifica_nao_negatividade(valor=(novo_valor, "atributo"))
 
         self.__valor = novo_valor
 
     def ha_ataque(self, indice_a, indice_b):
-        if not isinstance(indice_a, t.SupportsInt):
-            raise TypeError("O parâmetro indice_a precisa receber um número inteiro ou um objeto que possa ser "
-                            "convetido para tal.")
-        else:
-            indice_a = int(indice_a)
+        erros.verifica_tipo(indice_a=(indice_a, "parâmetro", t.SupportsInt),
+                            indice_b=(indice_b, "parâmetro", t.SupportsInt))
 
-        if not isinstance(indice_b, t.SupportsInt):
-            raise TypeError("O parâmetro indice_b precisa receber um número inteiro ou um objeto que possa ser "
-                            "convertido para tal.")
-        else:
-            indice_b = int(indice_b)
+        indice_a, indice_b = int(indice_a), int(indice_b)
 
         ha_ataque_horizontal = self.rainhas[indice_a] == self.rainhas[indice_b]
         ha_ataque_diagonal = (indice_b - indice_a) == abs(self.rainhas[indice_b] - self.rainhas[indice_a])
