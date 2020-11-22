@@ -5,9 +5,7 @@ from .caixinha import *
 # noinspection SpellCheckingInspection
 def simulated_annealing(temperatura_inicial, variacao, verboso=False):
     tabuleiro_atual = Tabuleiro()
-
-    n_iteracoes = np.round(np.floor(temperatura_inicial / variacao))
-    temperaturas = temperatura_inicial - variacao * np.arange(n_iteracoes)
+    temperaturas = gera_temperaturas(temperatura_inicial, variacao)
 
     if verboso is True:
         print(f"[Iteração -1] {tabuleiro_atual}")

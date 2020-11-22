@@ -3,8 +3,11 @@ import numpy as np
 
 
 # noinspection SpellCheckingInspection
-def reduz_temperatura(temperatura):
-    return temperatura - 0.01
+def gera_temperaturas(temperatura_inicial, variacao):
+    n_iteracoes = np.round(np.floor(temperatura_inicial / variacao))
+    temperaturas = temperatura_inicial - variacao * np.arange(n_iteracoes)
+
+    return temperaturas
 
 
 # noinspection SpellCheckingInspection
