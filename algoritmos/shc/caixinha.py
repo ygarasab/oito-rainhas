@@ -1,10 +1,17 @@
-import random, math, decimal
+import decimal
+import numpy as np
 
 
-def reduz_temperatura(temperatura):
-    return temperatura - 0.01
+# noinspection SpellCheckingInspection
+def gera_temperaturas(temperatura_inicial, variacao):
+    n_iteracoes = np.round(np.floor(temperatura_inicial / variacao))
+    temperaturas = temperatura_inicial - variacao * np.arange(n_iteracoes)
+
+    return temperaturas
 
 
+# noinspection SpellCheckingInspection
 def tabuleiro_deve_mudar(temperatura, variacao):
-    exp = decimal.Decimal(decimal.Decimal(math.e) ** (decimal.Decimal(variacao) / decimal.Decimal(temperatura)))
-    return random.uniform(0, 1) < exp
+    exp = decimal.Decimal(decimal.Decimal(np.e) ** (decimal.Decimal(variacao) / decimal.Decimal(temperatura)))
+
+    return np.random.uniform() < exp

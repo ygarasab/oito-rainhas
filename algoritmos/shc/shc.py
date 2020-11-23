@@ -1,20 +1,16 @@
-from tabuleiro import Tabuleiro
+from algoritmos.tabuleiro import Tabuleiro
 from .caixinha import *
 
 
-def simulated_annealing(temperatura_inicial):
+# noinspection SpellCheckingInspection
+def simulated_annealing(temperatura_inicial, variacao, verboso=False):
     tabuleiro_atual = Tabuleiro()
-    temperatura = temperatura_inicial
+    temperaturas = gera_temperaturas(temperatura_inicial, variacao)
 
-    print(f"Tabuleiro inicial: {tabuleiro_atual}  Ataques: {tabuleiro_atual.valor}")
+    if verboso is True:
+        print(f"[Iteração -1] {tabuleiro_atual}")
 
-    while 1:
-        temperatura = reduz_temperatura(temperatura)
-
-        if temperatura < 0:
-            print(f"Tabuleiro final: {tabuleiro_atual}  Ataques: {tabuleiro_atual.valor}")
-            break
-
+    for iteracao, temperatura in enumerate(temperaturas):
         tabuleiro_seguinte = Tabuleiro()
 
         variacao = tabuleiro_atual - tabuleiro_seguinte
@@ -23,3 +19,11 @@ def simulated_annealing(temperatura_inicial):
             tabuleiro_atual = tabuleiro_seguinte
         elif tabuleiro_deve_mudar(temperatura, variacao):
             tabuleiro_atual = tabuleiro_seguinte
+
+        if verboso is True:
+            print(f"[Iteração {iteracao}] {tabuleiro_atual} [Temperatura {np.round(temperatura, 3)}]")
+
+    if verboso is True:
+        print("A temperatura chegou a zero.")
+
+    return tabuleiro_atual
