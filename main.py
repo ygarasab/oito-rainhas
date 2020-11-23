@@ -1,5 +1,4 @@
-from algoritmos import shc
-from algoritmos.tabuleiro import Tabuleiro
+from algoritmos import shc, Tabuleiro
 
 tab1 = Tabuleiro(4)
 tab2 = Tabuleiro(4)

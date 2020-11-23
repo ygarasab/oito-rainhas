@@ -1,2 +1,3 @@
-from algoritmos.shc import shc
-from algoritmos.ag import *
+from .shc import shc
+from .ag import *
+from .tabuleiro import Tabuleiro
