@@ -18,15 +18,11 @@ class Tabuleiro:
 
     @lado_tabuleiro.setter
     def lado_tabuleiro(self, novo_lado_tabuleiro):
-        erros.verifica_tipo(lado_tabuleiro=(novo_lado_tabuleiro, "atributo", t.SupportsInt))
-
-        novo_lado_tabuleiro = int(novo_lado_tabuleiro)
+        novo_lado_tabuleiro = erros.verifica_tipo(lado_tabuleiro=(novo_lado_tabuleiro, "atributo", t.SupportsInt))
 
         erros.verifica_nao_negatividade(lado_tabuleiro=(novo_lado_tabuleiro, "atributo"))
-
-        if self.n_rainhas is not None and novo_lado_tabuleiro < self.n_rainhas:
-            raise ValueError("O atributo lado_tabuleiro precisa receber um número, no mínimo, igual ao atributo "
-                             "n_rainhas.")
+        erros.verifica_maior_ou_igual_a(lado_tabuleiro=(novo_lado_tabuleiro, "atributo"),
+                                        n_rainhas=(self.n_rainhas, "atributo"))
 
         self.__lado_tabuleiro = novo_lado_tabuleiro
 
@@ -36,14 +32,11 @@ class Tabuleiro:
 
     @n_rainhas.setter
     def n_rainhas(self, novo_n_rainhas):
-        erros.verifica_tipo(n_rainhas=(novo_n_rainhas, "atributo", t.SupportsInt))
-
-        novo_n_rainhas = int(novo_n_rainhas)
+        novo_n_rainhas = erros.verifica_tipo(n_rainhas=(novo_n_rainhas, "atributo", t.SupportsInt))
 
         erros.verifica_nao_negatividade(n_rainhas=(novo_n_rainhas, "atributo"))
-
-        if self.lado_tabuleiro is not None and novo_n_rainhas > self.lado_tabuleiro:
-            raise ValueError("O atributo n_rainhas não pode ser maior do que o atributo lado_tabuleiro.")
+        erros.verifica_menor_ou_igual_a(n_rainhas=(novo_n_rainhas, "atributo"),
+                                        lado_tabuleiro=(self.lado_tabuleiro, "atributo"))
 
         self.__n_rainhas = novo_n_rainhas
 
@@ -55,20 +48,15 @@ class Tabuleiro:
 
     @rainhas.setter
     def rainhas(self, novo_rainhas):
-        if not isinstance(novo_rainhas, np.ndarray):
-            if isinstance(novo_rainhas, (list, tuple)):
-                novo_rainhas = np.array(novo_rainhas, dtype=np.int_)
-            else:
-                raise TypeError("O atributo novo_rainhas precisa receber um array numpy.")
+        novo_rainhas = erros.verifica_tipo(rainhas=(novo_rainhas, "atributo", np.ndarray)).astype(np.int_)
 
-        if novo_rainhas.ndim > 1:
-            raise ValueError("O atributo ndim do atributo rainhas precisa ser igual a 1.")
+        erros.verifica_ndim(rainhas=(novo_rainhas, "atributo", 1))
+        erros.verifica_comprimento_menor_ou_igual_a(rainhas=(novo_rainhas, "atributo"),
+                                                    lado_tabuleiro=(self.lado_tabuleiro, "atributo"))
 
         if novo_rainhas.shape[0] < self.lado_tabuleiro:
             diferenca = self.lado_tabuleiro - novo_rainhas.shape[0]
             novo_rainhas = np.append(novo_rainhas, diferenca * [-1])
-        elif novo_rainhas.shape[0] > self.lado_tabuleiro:
-            raise TypeError("O comprimento de novo_rainhas precisa ser, no máximo, igual ao atributo lado_tabuleiro.")
 
         self.__rainhas = novo_rainhas
 
@@ -97,30 +85,25 @@ class Tabuleiro:
 
     @valor.setter
     def valor(self, novo_valor):
-        erros.verifica_tipo(valor=(novo_valor, "atributo", t.SupportsInt))
-
-        novo_valor = int(novo_valor)
+        novo_valor = erros.verifica_tipo(valor=(novo_valor, "atributo", t.SupportsInt))
 
         erros.verifica_nao_negatividade(valor=(novo_valor, "atributo"))
 
         self.__valor = novo_valor
 
     def ha_ataque(self, indice_a, indice_b):
-        erros.verifica_tipo(indice_a=(indice_a, "parâmetro", t.SupportsInt),
-                            indice_b=(indice_b, "parâmetro", t.SupportsInt))
-
-        indice_a, indice_b = int(indice_a), int(indice_b)
+        indice_a = erros.verifica_tipo(indice_a=(indice_a, "parâmetro", t.SupportsInt))
+        indice_b = erros.verifica_tipo(indice_b=(indice_b, "parâmetro", t.SupportsInt))
 
         ha_ataque_horizontal = self.rainhas[indice_a] == self.rainhas[indice_b]
         ha_ataque_diagonal = (indice_b - indice_a) == abs(self.rainhas[indice_b] - self.rainhas[indice_a])
 
         return ha_ataque_horizontal or ha_ataque_diagonal
 
-    def __sub__(self, other):
-        if not isinstance(other, Tabuleiro):
-            raise TypeError("O operador '-' funciona apenas entre objetos Tabuleiro.")
+    def __sub__(self, outro):
+        erros.verifica_tipo_operador('-', outro, Tabuleiro)
 
-        return self.valor - other.valor
+        return self.valor - outro.valor
 
     def __repr__(self):
         return f"[Tabuleiro] {self.rainhas} | {self.valor} ataques"
