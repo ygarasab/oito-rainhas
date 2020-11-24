@@ -1,4 +1,4 @@
-from algoritmos import Tabuleiro
+from ..tabuleiro import Tabuleiro
 from .caixinha import *
 
 
