@@ -105,5 +105,17 @@ class Tabuleiro:
 
         return self.valor - outro.valor
 
+    def __lt__(self, outro):
+
+        return self.valor < outro.valor
+
+    def __gt__(self, outro):
+
+        return self.valor > outro.valor
+
+    def __eq__(self, outro):
+
+        return self.valor == outro.valor
+
     def __repr__(self):
         return f"[Tabuleiro] {self.rainhas} | {self.valor} ataques"
