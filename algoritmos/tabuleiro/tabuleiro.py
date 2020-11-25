@@ -75,8 +75,8 @@ class Tabuleiro:
 
         for indice_rainha in range(self.n_rainhas):
             for indice_prox_rainha in range(indice_rainha + 1, self.n_rainhas):
-                ataques += self.ha_ataque(indice_rainha, indice_prox_rainha)  # ataque diagonal embaixo
-
+                ataques += self.ha_ataque(indice_rainha, indice_prox_rainha)  
+                
         self.valor = ataques
 
     @property
@@ -119,3 +119,6 @@ class Tabuleiro:
 
     def __repr__(self):
         return f"[Tabuleiro] {self.rainhas} | {self.valor} ataques"
+
+    def __len__(self):
+        return self.n_rainhas
