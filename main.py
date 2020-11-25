@@ -15,3 +15,4 @@ print(f"Valor do tab1: {tab1.valor}\n"
 
 ag1 = ag.algoritmo_genetico(20, 1000, .03, 0.8) # conforme pedido pelo professor
 print(ag1)
+
