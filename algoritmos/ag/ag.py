@@ -35,5 +35,8 @@ def algoritmo_genetico(tamanho_populacao, max_iteracoes, taxa_mutacao, taxa_cros
                   f"Sobreviventes: \n"
                   f"{gera_contagem_populacao(pais)}", end="\n\n")
 
+    if iteracao >= max_iteracoes and verboso is True:
+        print("O número máximo de iterações foi atingido.")
+
     # noinspection PyUnboundLocalVariable
     return pais[0] if not teste else [pais[0], dados_teste]

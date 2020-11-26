@@ -44,7 +44,7 @@ class Tabuleiro:
 
     @property
     def rainhas(self):
-        return self.__rainhas
+        return self.__rainhas.copy()
 
     @rainhas.setter
     def rainhas(self, novo_rainhas):

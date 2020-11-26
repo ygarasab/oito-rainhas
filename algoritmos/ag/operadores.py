@@ -42,6 +42,22 @@ def selecao_dos_pais(populacao):
     return pais
 
 
+# noinspection SpellCheckingInspection
+def selecao_dos_pais2(populacao, tamanho_ringue=3):
+    pais = []
+
+    for _ in range(2):
+        lutadores = random.sample(populacao, tamanho_ringue)
+        lutadores = sorted(lutadores)
+
+        if np.random.random() <= .5:
+            pais.append(lutadores[0])
+        else:
+            pais.append(lutadores[-1])
+
+    return pais
+
+
 # Cruzamento com ponto de corte aleatório
 # noinspection SpellCheckingInspection
 def cruzamento(pais, taxa_crossover):
@@ -76,7 +92,23 @@ def mutacao(filhos, taxa_mutacao):
             index1 = random.randint(0, tam - 1)
             index2 = random.randint(0, tam - 1)
 
-            filho.rainhas[index1], filho.rainhas[index2] = filho.rainhas[index2], filho.rainhas[index1]
+            rainhas = filho.rainhas
+            rainhas[index1], rainhas[index2] = rainhas[index2], rainhas[index1]
+            filho.rainhas = rainhas
+
+    return filhos
+
+
+# noinspection SpellCheckingInspection
+def mutacao2(filhos, taxa_mutacao, n_rainhas=8):
+    for filho in filhos:
+        rainhas = filho.rainhas
+
+        for rainha in range(len(rainhas)):
+            if np.random.uniform() <= taxa_mutacao:
+                rainhas[rainha] = np.random.choice(n_rainhas)
+
+        filho.rainhas = rainhas
 
     return filhos
 
@@ -87,3 +119,18 @@ def seleciona_sobreviventes(populacao, nova_populacao):
     sobreviventes = sorted(populacao + nova_populacao)
 
     return sobreviventes[:len(populacao)]
+
+
+# noinspection SpellCheckingInspection
+def seleciona_sobreviventes2(populacao, nova_populacao):
+    # NÃO USAR: A ATIVIDADE NÃO PERMITE ALTERAR ESTE OPERADOR.
+    sobreviventes_pais = sorted(populacao)
+    sobreviventes_filhos = sorted(nova_populacao)
+
+    comprimento_populacao = len(populacao)
+    metade = int(comprimento_populacao // 2)
+
+    if comprimento_populacao % 2 == 0:
+        return sorted(sobreviventes_pais[:metade] + sobreviventes_filhos[:metade])
+    else:
+        return sorted(sobreviventes_pais[:metade] + sobreviventes_filhos[:metade + 1])
