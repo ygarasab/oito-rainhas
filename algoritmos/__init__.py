@@ -1,3 +1,3 @@
 from .shc import shc
-from .ag import *
+from .ag import ag
 from .tabuleiro import Tabuleiro

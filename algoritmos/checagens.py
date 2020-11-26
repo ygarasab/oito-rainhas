@@ -4,14 +4,16 @@ import typing as t
 
 # noinspection SpellCheckingInspection
 def verifica_tipo(**parametro_dict):
-    if len(parametro_dict.keys()) != 1:
-        raise ValueError("Apenas um argumento pode ser passado para esta função.")
+    numero_de_parametros = len(parametro_dict.keys())
 
-    # noinspection PyUnresolvedReferences
+    if numero_de_parametros != 1:
+        raise ValueError(f"Apenas um parâmetro pode ser passado para esta função. Foram recebidos "
+                         f"{numero_de_parametros}.")
+
     parametro = list(parametro_dict.keys())[0]
     valor, descricao, tipos = parametro_dict[parametro]
 
-    if tipos == t.SupportsFloat and not isinstance(valor, tipos):
+    if tipos == t.SupportsFloat:
         if not isinstance(valor, tipos):
             raise TypeError(f"O {descricao} {parametro} precisa receber um número de ponto flutuante ou um objeto que "
                             f"possa ser convertido para tal.")
@@ -32,6 +34,16 @@ def verifica_tipo(**parametro_dict):
                                 f"convertido para tal.")
             else:
                 return np.array(valor)
+
+    if tipos == bool:
+        if not isinstance(valor, bool):
+            if isinstance(valor, np.bool_):
+                return bool(valor)
+            else:
+                raise TypeError(f"O {descricao} {parametro} precisa receber um objeto booleano ou um objeto que possa "
+                                f"ser convertido para tal.")
+        else:
+            return valor
 
     if not isinstance(valor, tipos):
         raise TypeError(f"O {descricao} {parametro} precisa receber um objeto de classe {tipos} ou que herde delas.")
@@ -65,8 +77,11 @@ def verifica_ndim(**parametros):
 
 # noinspection SpellCheckingInspection
 def verifica_maior_ou_igual_a(**parametros):
-    if len(parametros.keys()) != 2:
-        raise ValueError("Apenas dois argumentos podem ser passados para esta função.")
+    numero_de_parametros = len(parametros.keys())
+
+    if numero_de_parametros != 2:
+        raise ValueError(f"Apenas um parâmetro pode ser passado para esta função. Foram recebidos "
+                         f"{numero_de_parametros}.")
 
     parametro, outro_parametro = parametros.keys()
 
@@ -80,8 +95,11 @@ def verifica_maior_ou_igual_a(**parametros):
 
 # noinspection SpellCheckingInspection
 def verifica_menor_ou_igual_a(**parametros):
-    if len(parametros.keys()) != 2:
-        raise ValueError("Apenas dois argumentos podem ser passados para esta função.")
+    numero_de_parametros = len(parametros.keys())
+
+    if numero_de_parametros != 2:
+        raise ValueError(f"Apenas um parâmetro pode ser passado para esta função. Foram recebidos "
+                         f"{numero_de_parametros}.")
 
     parametro, outro_parametro = parametros.keys()
 
@@ -95,29 +113,78 @@ def verifica_menor_ou_igual_a(**parametros):
 
 # noinspection SpellCheckingInspection
 def verifica_comprimento_maior_ou_igual_a(**parametros):
-    if len(parametros.keys()) != 2:
-        raise ValueError("Apenas dois argumentos podem ser passados para esta função.")
+    numero_de_parametros = len(parametros.keys())
+
+    if numero_de_parametros != 2:
+        raise ValueError(f"Apenas um parâmetro pode ser passado para esta função. Foram recebidos "
+                         f"{numero_de_parametros}.")
 
     parametro, outro_parametro = parametros.keys()
 
     valor, descricao = parametros[parametro]
     outro_valor, outra_descricao = parametros[outro_parametro]
 
-    if outro_valor is not None and valor.shape[0] < outro_valor:
+    if outro_valor is not None and len(valor) < outro_valor:
         raise ValueError(f"O {descricao} {parametro} precisa receber um valor, no mínimo, igual ao {outra_descricao} "
                          f"{outro_parametro}.")
 
 
 # noinspection SpellCheckingInspection
 def verifica_comprimento_menor_ou_igual_a(**parametros):
-    if len(parametros.keys()) != 2:
-        raise ValueError("Apenas dois argumentos podem ser passados para esta função.")
+    numero_de_parametros = len(parametros.keys())
+
+    if numero_de_parametros != 2:
+        raise ValueError(f"Apenas um parâmetro pode ser passado para esta função. Foram recebidos "
+                         f"{numero_de_parametros}.")
 
     parametro, outro_parametro = parametros.keys()
 
     valor, descricao = parametros[parametro]
     outro_valor, outra_descricao = parametros[outro_parametro]
 
-    if outro_valor is not None and valor.shape[0] > outro_valor:
+    if outro_valor is not None and len(valor) > outro_valor:
         raise ValueError(f"O comprimento do {descricao} {parametro} precisa ser, no máximo, igual ao {outra_descricao} "
                          f"{outro_parametro}.")
+
+
+# noinspection SpellCheckingInspection
+def verifica_dtype(**parametro_dict):
+    numero_de_parametros = len(parametro_dict.keys())
+
+    if numero_de_parametros != 1:
+        raise ValueError(f"Apenas um parâmetro pode ser passado para esta função. Foram recebidos "
+                         f"{numero_de_parametros}.")
+
+    parametro = list(parametro_dict.keys())[0]
+    valor, descricao, dtype = parametro_dict[parametro]
+
+    if dtype == np.int_ and valor.dtype != dtype:
+        if valor.dtype == np.float_:
+            return valor.astype(np.int_)
+        else:
+            raise TypeError(f"O {descricao} {parametro} precisa ser um numpy array com atributo dtype igual a "
+                            f"{dtype}. O dtype do numpy array recebido é {valor.dtype}.")
+
+    if valor.dtype != dtype:
+        raise TypeError(f"O {descricao} {parametro} precisa ser um numpy array com atributo dtype igual a {dtype}."
+                        f"O dtype do numpy array recebido é {valor.dtype}.")
+    else:
+        return valor
+
+
+# noinspection SpellCheckingInspection
+def verifica_comprimento_binario_igual_a(**parametros):
+    numero_de_parametros = len(parametros.keys())
+
+    if numero_de_parametros != 2:
+        raise ValueError(f"Apenas um parâmetro pode ser passado para esta função. Foram recebidos "
+                         f"{numero_de_parametros}.")
+
+    parametro, outro_parametro = parametros.keys()
+
+    valor, descricao = parametros[parametro]
+    outro_valor, outra_descricao = parametros[outro_parametro]
+
+    if outro_valor is not None and len(valor) != outro_valor:
+        raise ValueError(f"O comprimento do {descricao} {parametro}, em binário, precisa ser igual ao "
+                         f"{outra_descricao} {outro_parametro}.")
