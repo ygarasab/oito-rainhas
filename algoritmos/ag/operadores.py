@@ -61,8 +61,7 @@ def selecao_dos_pais2(populacao, tamanho_ringue=3):
 # Cruzamento com ponto de corte aleatório
 # noinspection SpellCheckingInspection
 def cruzamento(pais, taxa_crossover):
-    pai1 = pais[0]
-    pai2 = pais[1]
+    pai1, pai2 = pais[0], pais[1]
 
     n = len(pai1)
     c = random.randint(0, n - 1)
@@ -72,9 +71,7 @@ def cruzamento(pais, taxa_crossover):
         filho2 = np.concatenate((pai2.rainhas[0:c], pai1.rainhas[c:n]))
 
         filho1, filho2 = Tabuleiro(binario=True, rainhas=filho1), Tabuleiro(binario=True, rainhas=filho2)
-
         filhos = [filho1, filho2]
-
     else:
         filhos = [pai1, pai2]
 
