@@ -6,7 +6,7 @@ from ..tabuleiro import Tabuleiro
 
 # noinspection SpellCheckingInspection
 def inicializa_populacao(tamanho_populacao):
-    populacao = [Tabuleiro() for _ in range(tamanho_populacao)]
+    populacao = [Tabuleiro(binario=True) for _ in range(tamanho_populacao)]
 
     return sorted(populacao)
 
@@ -68,11 +68,11 @@ def cruzamento(pais, taxa_crossover):
     c = random.randint(0, n - 1)
 
     if np.random.uniform() <= taxa_crossover:
-        filho1 = Tabuleiro()
-        filho1.rainhas = np.append(pai1.rainhas[0:c], pai2.rainhas[c:n])
+        filho1 = Tabuleiro(binario=True)
+        filho1.rainhas = np.concatenate((pai1.rainhas[0:c], pai2.rainhas[c:n]))
 
-        filho2 = Tabuleiro()
-        filho2.rainhas = np.append(pai2.rainhas[0:c], pai1.rainhas[c:n])
+        filho2 = Tabuleiro(binario=True)
+        filho2.rainhas = np.concatenate((pai2.rainhas[0:c], pai1.rainhas[c:n]))
 
         filhos = [filho1, filho2]
 
@@ -100,13 +100,13 @@ def mutacao(filhos, taxa_mutacao):
 
 
 # noinspection SpellCheckingInspection
-def mutacao2(filhos, taxa_mutacao, n_rainhas=8):
+def mutacao2(filhos, taxa_mutacao):
     for filho in filhos:
         rainhas = filho.rainhas
 
         for rainha in range(len(rainhas)):
             if np.random.uniform() <= taxa_mutacao:
-                rainhas[rainha] = np.random.choice(n_rainhas)
+                rainhas[rainha] = np.random.choice(np.array([np.True_, np.False_]), rainhas.shape[1])
 
         filho.rainhas = rainhas
 

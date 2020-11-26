@@ -1,8 +1,8 @@
 import algoritmos
 
 
-tab1 = algoritmos.Tabuleiro(4)
-tab2 = algoritmos.Tabuleiro(4)
+tab1 = algoritmos.Tabuleiro(n_rainhas=4)
+tab2 = algoritmos.Tabuleiro(n_rainhas=4)
 tab1.rainhas = [2, 1, 2, 1]  # exemplos do slide 12 pra testar se tá calculando o valor certo
 tab2.rainhas = [2, 0, 2, 1]
 

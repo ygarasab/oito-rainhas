@@ -4,7 +4,7 @@ from .caixinha import *
 
 # noinspection SpellCheckingInspection
 def simulated_annealing(temperatura_inicial, variacao, verboso=False):
-    tabuleiro_atual = Tabuleiro()
+    tabuleiro_atual = Tabuleiro(binario=False)
     temperaturas = gera_temperaturas(temperatura_inicial, variacao)
 
     if verboso is True:
