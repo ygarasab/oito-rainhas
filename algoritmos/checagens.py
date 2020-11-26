@@ -170,3 +170,21 @@ def verifica_dtype(**parametro_dict):
                         f"O dtype do numpy array recebido é {valor.dtype}.")
     else:
         return valor
+
+
+# noinspection SpellCheckingInspection
+def verifica_comprimento_binario_igual_a(**parametros):
+    numero_de_parametros = len(parametros.keys())
+
+    if numero_de_parametros != 2:
+        raise ValueError(f"Apenas um parâmetro pode ser passado para esta função. Foram recebidos "
+                         f"{numero_de_parametros}.")
+
+    parametro, outro_parametro = parametros.keys()
+
+    valor, descricao = parametros[parametro]
+    outro_valor, outra_descricao = parametros[outro_parametro]
+
+    if outro_valor is not None and len(valor) != outro_valor:
+        raise ValueError(f"O comprimento do {descricao} {parametro}, em binário, precisa ser igual ao "
+                         f"{outra_descricao} {outro_parametro}.")

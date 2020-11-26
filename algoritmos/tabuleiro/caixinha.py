@@ -9,9 +9,8 @@ def decimal_para_binario(numero, numero_de_bits):
     numero = checagens.verifica_tipo(numero=(numero, "parâmetro", t.SupportsInt))
     digitos_binarios = list(bin(numero + 1)[2:].zfill(numero_de_bits))
 
-    if len(digitos_binarios) > numero_de_bits:
-        raise OverflowError(f"O número de bits necessário para representar {numero} é {len(digitos_binarios)}, que é "
-                            f"superior a {numero_de_bits}.")
+    checagens.verifica_comprimento_binario_igual_a(numero=(digitos_binarios, "parâmetro"),
+                                                   numero_de_bits=(numero_de_bits, "parâmetro"))
 
     return np.array(digitos_binarios, dtype=np.int_).astype(np.bool_)
 

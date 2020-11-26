@@ -68,11 +68,10 @@ def cruzamento(pais, taxa_crossover):
     c = random.randint(0, n - 1)
 
     if np.random.uniform() <= taxa_crossover:
-        filho1 = Tabuleiro(binario=True)
-        filho1.rainhas = np.concatenate((pai1.rainhas[0:c], pai2.rainhas[c:n]))
+        filho1 = np.concatenate((pai1.rainhas[0:c], pai2.rainhas[c:n]))
+        filho2 = np.concatenate((pai2.rainhas[0:c], pai1.rainhas[c:n]))
 
-        filho2 = Tabuleiro(binario=True)
-        filho2.rainhas = np.concatenate((pai2.rainhas[0:c], pai1.rainhas[c:n]))
+        filho1, filho2 = Tabuleiro(binario=True, rainhas=filho1), Tabuleiro(binario=True, rainhas=filho2)
 
         filhos = [filho1, filho2]
 

@@ -7,12 +7,15 @@ from .. import checagens
 
 # noinspection SpellCheckingInspection,SpellCheckingInspection
 class Tabuleiro:
-    def __init__(self, *, binario=False, lado_tabuleiro=8, n_rainhas=8):
+    def __init__(self, *, binario=False, lado_tabuleiro=8, n_rainhas=8, rainhas=None):
         self.__lado_tabuleiro, self.__n_rainhas, self.__rainhas, self.__valor = None, None, None, np.inf
 
         self.binario = binario
         self.lado_tabuleiro = lado_tabuleiro
         self.n_rainhas = n_rainhas
+
+        if rainhas is not None:
+            self.rainhas = rainhas
 
     @property
     def binario(self):
@@ -125,8 +128,8 @@ class Tabuleiro:
 
     def ha_ataque(self, indice_a, indice_b):
         if self.binario is True:
-            rainhas = np.fromiter((caixinha.binario_para_decimal(posicao) for posicao in self.rainhas), np.int_,
-                                  self.n_rainhas)
+            iterador = (caixinha.binario_para_decimal(posicao) for posicao in self.rainhas)
+            rainhas = np.fromiter(iterador, np.int_, self.n_rainhas)
         else:
             rainhas = self.rainhas
 
