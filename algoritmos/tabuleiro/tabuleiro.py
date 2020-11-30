@@ -168,5 +168,24 @@ class Tabuleiro:
 
         return f"[Tabuleiro] {representacao_rainhas} | {self.valor} ataques | {tipo}"
 
+    def __str__(self):
+        if self.binario is False:
+            return str(self.rainhas.tolist())
+        else:
+            representacao = []
+
+            for rainha in self.rainhas:
+                string = ""
+
+                for bit in rainha:
+                    if bit is np.True_:
+                        string += "1"
+                    else:
+                        string += "0"
+
+                representacao.append(string)
+
+            return str(representacao).replace("'", "")
+
     def __len__(self):
         return self.n_rainhas

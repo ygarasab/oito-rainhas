@@ -3,15 +3,21 @@ from .caixinha import *
 
 
 # noinspection SpellCheckingInspection
-def simulated_annealing(temperatura_inicial, variacao, verboso=False):
-    tabuleiro_atual = Tabuleiro(binario=False)
+def simulated_annealing(temperatura_inicial=100, variacao=.01, verboso=False):
+    tabuleiro_atual = Tabuleiro(binario=True)
     temperaturas = gera_temperaturas(temperatura_inicial, variacao)
 
     if verboso is True:
         print(f"[Iteração -1] {tabuleiro_atual}")
 
+    if tabuleiro_atual.valor == 0:
+        return tabuleiro_atual, 0
+
     for iteracao, temperatura in enumerate(temperaturas):
-        tabuleiro_seguinte = Tabuleiro()
+        tabuleiro_seguinte = Tabuleiro(binario=True)
+
+        if tabuleiro_seguinte.valor == 0:
+            return tabuleiro_seguinte, iteracao + 1
 
         variacao = tabuleiro_atual - tabuleiro_seguinte
         

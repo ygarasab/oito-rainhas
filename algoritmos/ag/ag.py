@@ -3,7 +3,8 @@ from .caixinha import *
 
 
 # noinspection SpellCheckingInspection
-def algoritmo_genetico(tamanho_populacao, max_iteracoes, taxa_mutacao, taxa_crossover, verboso=False, teste=False):
+def algoritmo_genetico(tamanho_populacao=20, max_iteracoes=1000, taxa_mutacao=.03, taxa_crossover=.8, verboso=False,
+                       teste=False):
     pais = inicializa_populacao(tamanho_populacao)
     iteracao = 0
 
@@ -39,4 +40,5 @@ def algoritmo_genetico(tamanho_populacao, max_iteracoes, taxa_mutacao, taxa_cros
         print("O número máximo de iterações foi atingido.")
 
     # noinspection PyUnboundLocalVariable
-    return pais[0] if not teste else [pais[0], dados_teste]
+    # return pais[0] if not teste else [pais[0], dados_teste]
+    return pais[0], iteracao
