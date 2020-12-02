@@ -3,21 +3,15 @@ from .caixinha import *
 
 
 # noinspection SpellCheckingInspection
-def algoritmo_genetico(tamanho_populacao=20, max_iteracoes=1000, taxa_mutacao=.03, taxa_crossover=.8, verboso=False,
-                       teste=False):
+def algoritmo_genetico(tamanho_populacao=20, max_iteracoes=1000, taxa_mutacao=.03, taxa_crossover=.8, verboso=False):
     pais = inicializa_populacao(tamanho_populacao)
     iteracao = 0
-
-    if teste is True:
-        dados_teste = []
 
     if verboso is True:
         print(f"[Iteração {iteracao}] População inicial: \n"
               f"{gera_contagem_populacao(pais)}", end="\n\n")
 
     while iteracao < max_iteracoes:
-        if teste is True:
-            continue
 
         if pais[0].valor == 0:
             if verboso is True:
