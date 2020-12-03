@@ -83,7 +83,7 @@ class Tabuleiro:
 
     @property
     def rainhas(self):
-        return self.__rainhas.copy()
+        return self.__rainhas.copy() if self.__rainhas is not None else None
 
     @rainhas.setter
     def rainhas(self, novo_rainhas):
@@ -97,6 +97,9 @@ class Tabuleiro:
 
             checagens.verifica_ndim(rainhas=(novo_rainhas, "atributo", 2))
 
+            # novo_rainhas_decimal = np.array([caixinha.binario_para_decimal(posicao) for posicao in novo_rainhas])
+            # checagens.verifica_rainhas_unicas(rainhas=(novo_rainhas_decimal, "atributo"))
+
             if novo_rainhas.shape[0] < self.lado_tabuleiro:
                 diferenca = self.lado_tabuleiro - novo_rainhas.shape[0]
                 novo_rainhas = np.concatenate((novo_rainhas, diferenca * [[np.False_, np.False_, np.False_]]))
@@ -104,6 +107,7 @@ class Tabuleiro:
             novo_rainhas = checagens.verifica_dtype(rainhas=(novo_rainhas, "atributo", np.int_))
 
             checagens.verifica_ndim(rainhas=(novo_rainhas, "atributo", 1))
+            # checagens.verifica_rainhas_unicas(rainhas=(novo_rainhas, "atributo"))
 
             if novo_rainhas.shape[0] < self.lado_tabuleiro:
                 diferenca = self.lado_tabuleiro - novo_rainhas.shape[0]
@@ -141,20 +145,35 @@ class Tabuleiro:
 
         return ha_ataque_horizontal or ha_ataque_diagonal
 
+    @property
+    def ha_rainhas_na_mesma_linha(self):
+        if self.binario is True:
+            iterador = (caixinha.binario_para_decimal(posicao) for posicao in self.rainhas)
+            rainhas = np.fromiter(iterador, np.int_, self.n_rainhas)
+        else:
+            rainhas = self.rainhas
+
+        rainhas = rainhas[rainhas != -1]
+
+        return True if rainhas.shape[0] != np.unique(rainhas).shape[0] else False
+
     def __sub__(self, outro):
         checagens.verifica_tipo_operador('-', outro, Tabuleiro)
 
         return self.valor - outro.valor
 
     def __lt__(self, outro):
+        checagens.verifica_tipo_operador('<', outro, Tabuleiro)
 
         return self.valor < outro.valor
 
     def __gt__(self, outro):
+        checagens.verifica_tipo_operador('>', outro, Tabuleiro)
 
         return self.valor > outro.valor
 
     def __eq__(self, outro):
+        checagens.verifica_tipo_operador('==', outro, Tabuleiro)
 
         return self.valor == outro.valor
 

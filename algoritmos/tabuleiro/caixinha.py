@@ -5,14 +5,16 @@ from .. import checagens
 
 
 # noinspection SpellCheckingInspection
-def decimal_para_binario(numero, numero_de_bits):
-    numero = checagens.verifica_tipo(numero=(numero, "parâmetro", t.SupportsInt))
-    digitos_binarios = list(bin(numero + 1)[2:].zfill(numero_de_bits))
+def ajusta_indentacao(string, string_para_adicionar):
+    string = checagens.verifica_tipo(string=(string, "parâmetro", str))
+    string_para_adicionar = checagens.verifica_tipo(string_para_adicionar=(string_para_adicionar, "parâmetro", str))
 
-    checagens.verifica_comprimento_binario_igual_a(numero=(digitos_binarios, "parâmetro"),
-                                                   numero_de_bits=(numero_de_bits, "parâmetro"))
+    linhas = string.split("\n")
 
-    return np.array(digitos_binarios, dtype=np.int_).astype(np.bool_)
+    for linha in range(1, len(linhas)):
+        linhas[linha] = string_para_adicionar + linhas[linha]
+
+    return "\n".join(linhas)
 
 
 # noinspection SpellCheckingInspection
@@ -23,10 +25,11 @@ def binario_para_decimal(bits):
 
 
 # noinspection SpellCheckingInspection
-def ajusta_indentacao(string, string_para_adicionar):
-    linhas = string.split("\n")
+def decimal_para_binario(numero, numero_de_bits):
+    numero = checagens.verifica_tipo(numero=(numero, "parâmetro", t.SupportsInt))
+    digitos_binarios = list(bin(numero + 1)[2:].zfill(numero_de_bits))
 
-    for linha in range(1, len(linhas)):
-        linhas[linha] = string_para_adicionar + linhas[linha]
+    checagens.verifica_comprimento_binario_igual_a(numero=(digitos_binarios, "parâmetro"),
+                                                   numero_de_bits=(numero_de_bits, "parâmetro"))
 
-    return "\n".join(linhas)
+    return np.array(digitos_binarios, dtype=np.int_).astype(np.bool_)

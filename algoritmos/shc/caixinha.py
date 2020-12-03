@@ -1,4 +1,4 @@
-import decimal
+import decimal as d
 import numpy as np
 import typing as t
 
@@ -7,6 +7,10 @@ from .. import checagens
 
 # noinspection SpellCheckingInspection
 def gera_temperaturas(temperatura_inicial, variacao):
+    temperatura_inicial = checagens.verifica_tipo(temperatura_inicial=(temperatura_inicial, "parâmetro",
+                                                                       t.SupportsFloat))
+    variacao = checagens.verifica_tipo(variacao=(variacao, "parâmetro", t.SupportsFloat))
+
     n_iteracoes = np.round(np.floor(temperatura_inicial / variacao))
     temperaturas = temperatura_inicial - variacao * np.arange(n_iteracoes)
 
@@ -19,6 +23,6 @@ def tabuleiro_deve_mudar(temperatura, variacao):
     variacao = checagens.verifica_tipo(variacao=(variacao, "parâmetro", t.SupportsFloat))
     e = float(np.e)
 
-    exp = decimal.Decimal(decimal.Decimal(e) ** (decimal.Decimal(variacao) / decimal.Decimal(temperatura)))
+    exp = d.Decimal(d.Decimal(e) ** (d.Decimal(variacao) / d.Decimal(temperatura)))
 
     return np.random.uniform() < exp
