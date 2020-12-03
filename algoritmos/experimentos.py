@@ -40,8 +40,8 @@ def executa_experimento(funcao, n_execucoes=50, verboso=True):
 
     figura.suptitle(f"Dados da execução do algoritmo {str(funcao).split(' ')[1]}")
 
-    eixos[0].set_title("Iterações mínimas por execução")
-    eixos[1].set_title("Tempo mínimo por execução (em segundos)")
+    eixos[0].set_title("Iterações por execução")
+    eixos[1].set_title("Tempo por execução (seg.)")
 
     sns.lineplot(x=range(1, n_execucoes + 1), y=iteracoes_gastas.ravel(), ax=eixos[0])
     sns.lineplot(x=range(1, n_execucoes + 1), y=tempos_gastos.ravel(), ax=eixos[1])
