@@ -140,10 +140,9 @@ class Tabuleiro:
         indice_a = checagens.verifica_tipo(indice_a=(indice_a, "parâmetro", t.SupportsInt))
         indice_b = checagens.verifica_tipo(indice_b=(indice_b, "parâmetro", t.SupportsInt))
 
-        ha_ataque_horizontal = rainhas[indice_a] == rainhas[indice_b]
         ha_ataque_diagonal = (indice_b - indice_a) == abs(rainhas[indice_b] - rainhas[indice_a])
 
-        return ha_ataque_horizontal or ha_ataque_diagonal
+        return ha_ataque_diagonal
 
     @property
     def ha_rainhas_na_mesma_linha(self):
