@@ -125,3 +125,5 @@ dmypy.json
 
 # IDEA folder
 .idea
+
+*.zip
